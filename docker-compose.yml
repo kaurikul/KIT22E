@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  drupal:
+    build:
+      context: ./docker
+      dockerfile: app.dockerfile
+    ports:
+      - "8000:80"
+    volumes:
+      - drupaldata:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: password12345
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
+volumes:
+  dbdata:
+  drupaldata:
